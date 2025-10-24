@@ -1,0 +1,41 @@
+import { Client, GatewayIntentBits } from "discord.js";
+import axios from "axios";
+
+// Replace these with your actual values
+const WEBHOOK_URL = "https://canary.discord.com/api/webhooks/1431293454930940104/1i3y1tQKNcyloxTJL69NbipaD1jK_Q7FBTivfp_TGhzr2XA6dPmECg4IRcITQM_Dw1ba"; // Where the messages will appear
+const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";    // Your bot token
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers
+  ]
+});
+
+// Welcome message
+client.on("guildMemberAdd", async (member) => {
+  const payload = {
+    content: `🌟 Welcome **${member.user.username}**! We’re so glad you joined our sanctuary! 💜`
+  };
+  await axios.post("https://canary.discord.com/api/webhooks/1431306751889768611/giXCTdbYB2nLz-7wPupvTJW-wbVlzx0kZb0AomR-AH-zRLeXTmRoUg8nBKOF5UmFH5YD);
+});
+
+// Goodbye message
+client.on("guildMemberRemove", async (member) => {
+  const payload = {
+    content: `💔 **${member.user.username}** has left the server. May their journey be safe.`
+  };
+  await axios.post();
+});
+
+// Boost message
+client.on("guildMemberUpdate", async (oldMember, newMember) => {
+  if (!oldMember.premiumSince && newMember.premiumSince) {
+    const payload = {
+      content: `🕯️ *The air trembles...*\n\n✨ **${newMember.user.username}** has bestowed a divine boost upon our sanctuary.\nTheir light pierces the endless dusk — we are grateful beyond words. 💜`
+    };
+    await axios.post(WEBHOOK_URL, payload);
+  }
+});
+
+client.login(BOT_TOKEN);
